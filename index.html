@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>MATIN - Che Tên Sản Phẩm</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="MATIN">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MATIN">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Che tên sản phẩm Shopee & Lazada">
+    
+    <!-- iOS Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23667eea'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='80' fill='white'>🛡️</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🛡️</text></svg>">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;MATIN&quot;,&quot;short_name&quot;:&quot;MATIN&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%23667eea&quot;,&quot;theme_color&quot;:&quot;%23667eea&quot;,&quot;description&quot;:&quot;Che tên sản phẩm Shopee & Lazada&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%23667eea'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='280' fill='white'>🛡️</text></svg>&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9ff;
+        }
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: #f0f1ff;
+        }
+        .upload-area.dragover {
+            border-color: #764ba2;
+            background: #e8e9ff;
+            transform: scale(1.02);
+        }
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .watermark-section {
+            margin: 25px 0;
+        }
+        .watermark-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .watermark-preview {
+            max-width: 200px;
+            max-height: 100px;
+            margin-top: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status.processing {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .file-list {
+            margin-top: 15px;
+        }
+        .file-item {
+            background: #f8f9ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-name {
+            font-weight: 500;
+            color: #333;
+        }
+        .file-platform {
+            font-size: 12px;
+            color: #667eea;
+            background: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ MATIN</h1>
+        <p class="subtitle">Che tên sản phẩm - Shopee & Lazada</p>
+        
+        <div class="upload-area" id="pdfDropZone">
+            <div class="upload-icon">📄</div>
+            <p><strong>Kéo thả file PDF vào đây</strong></p>
+            <p style="color: #999; font-size: 14px; margin-top: 8px;">hoặc nhấn để chọn file</p>
+            <input type="file" id="pdfInput" accept=".pdf" multiple>
+        </div>
+
+        <div class="watermark-section">
+            <label class="watermark-label">Upload Watermark (JPG/PNG - Có thể chọn nhiều):</label>
+            <div class="upload-area" id="watermarkDropZone" style="padding: 20px;">
+                <div class="upload-icon" style="font-size: 32px;">🖼️</div>
+                <p style="font-size: 14px;">Chọn ảnh watermark (nhiều file)</p>
+                <input type="file" id="watermarkInput" accept="image/*" multiple>
+            </div>
+            <div id="watermarkList" style="margin-top: 10px;"></div>
+        </div>
+
+        <div class="file-list" id="fileList"></div>
+
+        <button class="btn" id="processBtn" disabled>Xử Lý PDF</button>
+
+        <div id="status"></div>
+    </div>
+
+    <script>
+        const { PDFDocument, rgb } = PDFLib;
+        
+        let pdfFiles = [];
+        let watermarkFiles = [];
+
+        // PDF Upload
+        const pdfDropZone = document.getElementById('pdfDropZone');
+        const pdfInput = document.getElementById('pdfInput');
+        
+        pdfDropZone.addEventListener('click', () => pdfInput.click());
+        pdfDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            pdfDropZone.classList.add('dragover');
+        });
+        pdfDropZone.addEventListener('dragleave', () => {
+            pdfDropZone.classList.remove('dragover');
+        });
+        pdfDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            pdfDropZone.classList.remove('dragover');
+            handlePDFFiles(e.dataTransfer.files);
+        });
+        pdfInput.addEventListener('change', (e) => {
+            handlePDFFiles(e.target.files);
+        });
+
+        // Watermark Upload
+        const watermarkDropZone = document.getElementById('watermarkDropZone');
+        const watermarkInput = document.getElementById('watermarkInput');
+        const watermarkList = document.getElementById('watermarkList');
+        
+        watermarkDropZone.addEventListener('click', () => watermarkInput.click());
+        watermarkDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            watermarkDropZone.classList.add('dragover');
+        });
+        watermarkDropZone.addEventListener('dragleave', () => {
+            watermarkDropZone.classList.remove('dragover');
+        });
+        watermarkDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            watermarkDropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                handleWatermarkFiles(e.dataTransfer.files);
+            }
+        });
+        watermarkInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) handleWatermarkFiles(e.target.files);
+        });
+
+        async function handleWatermarkFiles(files) {
+            watermarkFiles = Array.from(files).filter(f => 
+                f.type === 'image/jpeg' || f.type === 'image/jpg' || f.type === 'image/png'
+            );
+            displayWatermarkList();
+            updateProcessButton();
+        }
+
+        function displayWatermarkList() {
+            watermarkList.innerHTML = watermarkFiles.map((file, i) => {
+                const url = URL.createObjectURL(file);
+                return `
+                    <div style="display: inline-block; margin: 5px;">
+                        <img src="${url}" class="watermark-preview" style="display: block;">
+                        <p style="font-size: 11px; text-align: center; color: #666; margin-top: 5px;">${file.name}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function handlePDFFiles(files) {
+            pdfFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.pdf'));
+            displayFileList();
+            updateProcessButton();
+        }
+
+        function displayFileList() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = pdfFiles.map((file, i) => {
+                const platform = getPlatform(file.name);
+                return `
+                    <div class="file-item">
+                        <span class="file-name">${file.name}</span>
+                        <span class="file-platform">${platform || '❓ Không rõ'}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateProcessButton() {
+            const btn = document.getElementById('processBtn');
+            btn.disabled = !(pdfFiles.length > 0 && watermarkFiles.length > 0);
+        }
+
+        function getPlatform(filename) {
+            const name = filename.toLowerCase();
+            if (name.startsWith('phieuguihang') || name.startsWith('phieu gui hang')) {
+                return '🛒 Shopee';
+            }
+            if (name.includes('oder')) {
+                return '🛍️ Lazada';
+            }
+            return null;
+        }
+
+        function getCoordsByFilename(filename) {
+            const name = filename.toLowerCase();
+            if (name.startsWith('phieuguihang') || name.startsWith('phieu gui hang')) {
+                return {
+                    x: 10,
+                    y: 180,
+                    width: 197.6273,
+                    height: 108.9624
+                };
+            }
+            if (name.includes('oder')) {
+                return {
+                    x: 15,
+                    y: 236,
+                    width: 266.7682,
+                    height: 129.9056
+                };
+            }
+            return null;
+        }
+
+        document.getElementById('processBtn').addEventListener('click', async () => {
+            const status = document.getElementById('status');
+            status.innerHTML = '<div class="status processing"><div class="loading"></div> Đang xử lý...</div>';
+
+            try {
+                let watermarkIndex = 0;
+                
+                for (const file of pdfFiles) {
+                    const coords = getCoordsByFilename(file.name);
+                    if (!coords) {
+                        status.innerHTML = `<div class="status error">❌ Không nhận diện được: ${file.name}</div>`;
+                        continue;
+                    }
+
+                    // Chọn watermark theo vòng lặp
+                    const watermarkFile = watermarkFiles[watermarkIndex % watermarkFiles.length];
+                    watermarkIndex++;
+
+                    const arrayBuffer = await file.arrayBuffer();
+                    const pdfDoc = await PDFDocument.load(arrayBuffer);
+                    
+                    // Load watermark
+                    const watermarkArrayBuffer = await watermarkFile.arrayBuffer();
+                    const watermarkImageBytes = new Uint8Array(watermarkArrayBuffer);
+                    
+                    let watermarkImage;
+                    const imgType = watermarkFile.type;
+                    if (imgType === 'image/jpeg' || imgType === 'image/jpg') {
+                        watermarkImage = await pdfDoc.embedJpg(watermarkImageBytes);
+                    } else {
+                        watermarkImage = await pdfDoc.embedPng(watermarkImageBytes);
+                    }
+
+                    const pages = pdfDoc.getPages();
+                    pages.forEach(page => {
+                        const { height } = page.getSize();
+                        
+                        // Vẽ nền trắng
+                        page.drawRectangle({
+                            x: coords.x,
+                            y: height - coords.y - coords.height,
+                            width: coords.width,
+                            height: coords.height,
+                            color: rgb(1, 1, 1),
+                        });
+                        
+                        // Vẽ watermark
+                        page.drawImage(watermarkImage, {
+                            x: coords.x,
+                            y: height - coords.y - coords.height,
+                            width: coords.width,
+                            height: coords.height,
+                        });
+                    });
+
+                    const pdfBytes = await pdfDoc.save();
+                    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = file.name;
+                    a.click();
+                }
+
+                status.innerHTML = '<div class="status success">✅ Hoàn tất! File đã được tải xuống.</div>';
+            } catch (error) {
+                status.innerHTML = `<div class="status error">❌ Lỗi: ${error.message}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>
