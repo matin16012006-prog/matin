@@ -93,26 +93,41 @@
             border: 2px solid #ddd;
             border-radius: 8px;
         }
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 15px 40px;
+            padding: 15px 20px;
             border-radius: 30px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
             transition: all 0.3s;
         }
         .btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+        .btn-shopee {
+            background: linear-gradient(135deg, #ee4d2d 0%, #ff6b4d 100%);
+        }
+        .btn-shopee:hover:not(:disabled) {
+            box-shadow: 0 10px 25px rgba(238, 77, 45, 0.4);
+        }
+        .btn-lazada {
+            background: linear-gradient(135deg, #0f146d 0%, #1a1f8f 100%);
+        }
+        .btn-lazada:hover:not(:disabled) {
+            box-shadow: 0 10px 25px rgba(15, 20, 109, 0.4);
         }
         .status {
             margin-top: 20px;
@@ -149,7 +164,7 @@
             font-weight: 500;
             color: #333;
         }
-        .file-platform {
+        .file-count {
             font-size: 12px;
             color: #667eea;
             background: white;
@@ -195,7 +210,14 @@
 
         <div class="file-list" id="fileList"></div>
 
-        <button class="btn" id="processBtn" disabled>Xử Lý PDF</button>
+        <div class="btn-group">
+            <button class="btn btn-shopee" id="processBtnShopee" disabled>
+                🛒 Xử Lý Shopee
+            </button>
+            <button class="btn btn-lazada" id="processBtnLazada" disabled>
+                🛍️ Xử Lý Lazada
+            </button>
+        </div>
 
         <div id="status"></div>
     </div>
@@ -256,7 +278,7 @@
                 f.type === 'image/jpeg' || f.type === 'image/jpg' || f.type === 'image/png'
             );
             displayWatermarkList();
-            updateProcessButton();
+            updateProcessButtons();
         }
 
         function displayWatermarkList() {
@@ -274,73 +296,55 @@
         function handlePDFFiles(files) {
             pdfFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.pdf'));
             displayFileList();
-            updateProcessButton();
+            updateProcessButtons();
         }
 
         function displayFileList() {
             const fileList = document.getElementById('fileList');
-            fileList.innerHTML = pdfFiles.map((file, i) => {
-                const platform = getPlatform(file.name);
-                return `
+            if (pdfFiles.length > 0) {
+                fileList.innerHTML = `
                     <div class="file-item">
-                        <span class="file-name">${file.name}</span>
-                        <span class="file-platform">${platform || '❓ Không rõ'}</span>
+                        <span class="file-name">📄 ${pdfFiles.length} file PDF đã chọn</span>
+                        <span class="file-count">${pdfFiles.length} file</span>
                     </div>
                 `;
-            }).join('');
+            } else {
+                fileList.innerHTML = '';
+            }
         }
 
-        function updateProcessButton() {
-            const btn = document.getElementById('processBtn');
-            btn.disabled = !(pdfFiles.length > 0 && watermarkFiles.length > 0);
+        function updateProcessButtons() {
+            const btnShopee = document.getElementById('processBtnShopee');
+            const btnLazada = document.getElementById('processBtnLazada');
+            const canProcess = pdfFiles.length > 0 && watermarkFiles.length > 0;
+            btnShopee.disabled = !canProcess;
+            btnLazada.disabled = !canProcess;
         }
 
-        function getPlatform(filename) {
-            const name = filename.toLowerCase();
-            if (name.startsWith('phieuguihang') || name.startsWith('phieu gui hang')) {
-                return '🛒 Shopee';
-            }
-            if (name.includes('oder')) {
-                return '🛍️ Lazada';
-            }
-            return null;
-        }
+        // Shopee coordinates
+        const SHOPEE_COORDS = {
+            x: 10,
+            y: 180,
+            width: 197.6273,
+            height: 108.9624
+        };
 
-        function getCoordsByFilename(filename) {
-            const name = filename.toLowerCase();
-            if (name.startsWith('phieuguihang') || name.startsWith('phieu gui hang')) {
-                return {
-                    x: 10,
-                    y: 180,
-                    width: 197.6273,
-                    height: 108.9624
-                };
-            }
-            if (name.includes('oder')) {
-                return {
-                    x: 15,
-                    y: 236,
-                    width: 266.7682,
-                    height: 129.9056
-                };
-            }
-            return null;
-        }
+        // Lazada coordinates
+        const LAZADA_COORDS = {
+            x: 15,
+            y: 236,
+            width: 266.7682,
+            height: 129.9056
+        };
 
-        document.getElementById('processBtn').addEventListener('click', async () => {
+        async function processPDFs(coords, platform) {
             const status = document.getElementById('status');
-            status.innerHTML = '<div class="status processing"><div class="loading"></div> Đang xử lý...</div>';
+            status.innerHTML = `<div class="status processing"><div class="loading"></div> Đang xử lý ${platform}...</div>`;
 
             try {
                 let watermarkIndex = 0;
                 
                 for (const file of pdfFiles) {
-                    const coords = getCoordsByFilename(file.name);
-                    if (!coords) {
-                        status.innerHTML = `<div class="status error">❌ Không nhận diện được: ${file.name}</div>`;
-                        continue;
-                    }
-
                     // Chọn watermark theo vòng lặp
                     const watermarkFile = watermarkFiles[watermarkIndex % watermarkFiles.length];
                     watermarkIndex++;
@@ -391,10 +395,19 @@
                     a.click();
                 }
 
-                status.innerHTML = '<div class="status success">✅ Hoàn tất! File đã được tải xuống.</div>';
+                status.innerHTML = `<div class="status success">✅ Hoàn tất ${platform}! ${pdfFiles.length} file đã được tải xuống.</div>`;
             } catch (error) {
                 status.innerHTML = `<div class="status error">❌ Lỗi: ${error.message}</div>`;
             }
+        }
+
+        // Event listeners for buttons
+        document.getElementById('processBtnShopee').addEventListener('click', () => {
+            processPDFs(SHOPEE_COORDS, 'Shopee');
+        });
+
+        document.getElementById('processBtnLazada').addEventListener('click', () => {
+            processPDFs(LAZADA_COORDS, 'Lazada');
         });
     </script>
 </body>
