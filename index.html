@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <title>MATIN - Che Tên Sản Phẩm</title>
     
     <!-- PWA Meta Tags -->
@@ -14,23 +14,117 @@
     <meta name="description" content="Che tên sản phẩm Shopee & Lazada">
     
     <!-- iOS Icons -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23667eea'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='80' fill='white'>🛡️</text></svg>">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🛡️</text></svg>">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
     
     <!-- Manifest -->
-    <link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;MATIN&quot;,&quot;short_name&quot;:&quot;MATIN&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%23667eea&quot;,&quot;theme_color&quot;:&quot;%23667eea&quot;,&quot;description&quot;:&quot;Che tên sản phẩm Shopee & Lazada&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%23667eea'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='280' fill='white'>🛡️</text></svg>&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
+    <link rel="manifest" href="manifest.json">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Splash Screen */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        #splash-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .splash-logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 30px;
+            animation: logoFadeIn 1s ease-out;
+        }
+        .splash-text {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            animation: textSlideUp 1s ease-out 0.3s both;
+        }
+        .splash-subtext {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            margin-top: 10px;
+            animation: textSlideUp 1s ease-out 0.5s both;
+        }
+        .loading-dots {
+            display: flex;
+            gap: 8px;
+            margin-top: 30px;
+        }
+        .loading-dots span {
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            animation: dotBounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes logoFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        @keyframes textSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes dotBounce {
+            0%, 80%, 100% { 
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% { 
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        html {
+            height: -webkit-fill-available;
         }
         .container {
             background: white;
@@ -38,28 +132,55 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 600px;
             width: 100%;
-            padding: 40px;
+            padding: 30px 20px;
         }
         h1 {
             color: #333;
-            margin-bottom: 10px;
-            font-size: 28px;
+            margin-bottom: 8px;
+            font-size: 26px;
             text-align: center;
         }
         .subtitle {
             text-align: center;
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             font-size: 14px;
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+                padding-top: max(20px, env(safe-area-inset-top));
+            }
+            .container {
+                padding: 25px 15px;
+                border-radius: 15px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .subtitle {
+                font-size: 13px;
+                margin-bottom: 20px;
+            }
         }
         .upload-area {
             border: 3px dashed #667eea;
             border-radius: 15px;
-            padding: 40px;
+            padding: 30px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
             background: #f8f9ff;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         .upload-area:hover {
             border-color: #764ba2;
@@ -70,48 +191,96 @@
             background: #e8e9ff;
             transform: scale(1.02);
         }
+        .upload-area:active {
+            transform: scale(0.98);
+        }
         .upload-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+        .upload-area p {
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 480px) {
+            .upload-area {
+                padding: 25px 15px;
+                min-height: 120px;
+                border-width: 2px;
+            }
+            .upload-icon {
+                font-size: 36px;
+                margin-bottom: 10px;
+            }
+            .upload-area p {
+                font-size: 14px;
+            }
         }
         input[type="file"] {
             display: none;
         }
         .watermark-section {
-            margin: 25px 0;
+            margin: 20px 0;
         }
         .watermark-label {
             font-weight: 600;
             color: #333;
             margin-bottom: 10px;
             display: block;
+            font-size: 15px;
         }
         .watermark-preview {
-            max-width: 200px;
-            max-height: 100px;
-            margin-top: 10px;
+            max-width: 180px;
+            max-height: 90px;
+            margin-top: 8px;
             border: 2px solid #ddd;
             border-radius: 8px;
+            display: block;
+        }
+        
+        @media (max-width: 480px) {
+            .watermark-section {
+                margin: 18px 0;
+            }
+            .watermark-label {
+                font-size: 14px;
+            }
+            .watermark-preview {
+                max-width: 150px;
+                max-height: 75px;
+            }
         }
         .btn-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
             margin-top: 20px;
         }
         .btn {
             color: white;
             border: none;
-            padding: 15px 20px;
+            padding: 16px 20px;
             border-radius: 30px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            -webkit-appearance: none;
+            appearance: none;
+            touch-action: manipulation;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
         }
         .btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
         }
         .btn:disabled {
             opacity: 0.5;
@@ -129,12 +298,35 @@
         .btn-lazada:hover:not(:disabled) {
             box-shadow: 0 10px 25px rgba(15, 20, 109, 0.4);
         }
+        
+        @media (max-width: 480px) {
+            .btn-group {
+                gap: 10px;
+                margin-top: 18px;
+            }
+            .btn {
+                padding: 14px 16px;
+                font-size: 14px;
+                min-height: 48px;
+                border-radius: 25px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .btn-group {
+                grid-template-columns: 1fr;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
         .status {
             margin-top: 20px;
             padding: 15px;
             border-radius: 10px;
             text-align: center;
             font-weight: 500;
+            font-size: 15px;
         }
         .status.success {
             background: #d4edda;
@@ -153,16 +345,21 @@
         }
         .file-item {
             background: #f8f9ff;
-            padding: 12px;
+            padding: 12px 15px;
             border-radius: 8px;
             margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
         .file-name {
             font-weight: 500;
             color: #333;
+            font-size: 14px;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .file-count {
             font-size: 12px;
@@ -170,6 +367,29 @@
             background: white;
             padding: 4px 12px;
             border-radius: 12px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        @media (max-width: 480px) {
+            .status {
+                padding: 12px;
+                font-size: 14px;
+                margin-top: 18px;
+            }
+            .file-list {
+                margin-top: 12px;
+            }
+            .file-item {
+                padding: 10px 12px;
+            }
+            .file-name {
+                font-size: 13px;
+            }
+            .file-count {
+                font-size: 11px;
+                padding: 3px 10px;
+            }
         }
         .loading {
             display: inline-block;
@@ -179,16 +399,76 @@
             border-top: 3px solid #667eea;
             border-radius: 50%;
             animation: spin 1s linear infinite;
+            margin-right: 8px;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        /* Watermark list improvements */
+        #watermarkList {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .watermark-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .watermark-filename {
+            font-size: 11px;
+            text-align: center;
+            color: #666;
+            margin-top: 5px;
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        @media (max-width: 480px) {
+            .loading {
+                width: 18px;
+                height: 18px;
+                border-width: 2px;
+            }
+            #watermarkList {
+                gap: 8px;
+            }
+            .watermark-filename {
+                font-size: 10px;
+                max-width: 150px;
+            }
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
 <body>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <img src="logo.jpg" alt="MATIN ORDER" class="splash-logo">
+        <div class="splash-text">MATIN ORDER</div>
+        <div class="splash-subtext">Che tên sản phẩm - Shopee & Lazada</div>
+        <div class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
     <div class="container">
-        <h1>🛡️ MATIN</h1>
+        <h1>MATIN ORDER</h1>
         <p class="subtitle">Che tên sản phẩm - Shopee & Lazada</p>
         
         <div class="upload-area" id="pdfDropZone">
@@ -223,6 +503,17 @@
     </div>
 
     <script>
+        // Splash Screen Handler
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const splash = document.getElementById('splash-screen');
+                splash.classList.add('hidden');
+                setTimeout(function() {
+                    splash.style.display = 'none';
+                }, 500);
+            }, 1500); // Hiển thị splash 1.5 giây
+        });
+
         const { PDFDocument, rgb } = PDFLib;
         
         let pdfFiles = [];
@@ -285,9 +576,9 @@
             watermarkList.innerHTML = watermarkFiles.map((file, i) => {
                 const url = URL.createObjectURL(file);
                 return `
-                    <div style="display: inline-block; margin: 5px;">
-                        <img src="${url}" class="watermark-preview" style="display: block;">
-                        <p style="font-size: 11px; text-align: center; color: #666; margin-top: 5px;">${file.name}</p>
+                    <div class="watermark-item">
+                        <img src="${url}" class="watermark-preview">
+                        <p class="watermark-filename">${file.name}</p>
                     </div>
                 `;
             }).join('');
