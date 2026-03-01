@@ -5,30 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <title>MATIN - Che Tên Sản Phẩm</title>
     
-    <!-- PWA Meta Tags -->
     <meta name="application-name" content="MATIN">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MATIN">
     <meta name="theme-color" content="#667eea">
-    <meta name="description" content="Che tên sản phẩm Shopee & Lazada">
+    <meta name="description" content="Che tên sản phẩm Shopee, Lazada & TikTok Shop">
     
-    <!-- iOS Icons -->
     <link rel="apple-touch-icon" href="logo.jpg">
     <link rel="icon" type="image/jpeg" href="logo.jpg">
-    
-    <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <style>
-        /* Splash Screen */
         #splash-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             flex-direction: column;
@@ -37,81 +30,20 @@
             z-index: 9999;
             transition: opacity 0.5s ease-out;
         }
-        #splash-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .splash-logo {
-            width: 200px;
-            height: auto;
-            margin-bottom: 30px;
-            animation: logoFadeIn 1s ease-out;
-        }
-        .splash-text {
-            color: white;
-            font-size: 32px;
-            font-weight: bold;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            animation: textSlideUp 1s ease-out 0.3s both;
-        }
-        .splash-subtext {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 16px;
-            margin-top: 10px;
-            animation: textSlideUp 1s ease-out 0.5s both;
-        }
-        .loading-dots {
-            display: flex;
-            gap: 8px;
-            margin-top: 30px;
-        }
-        .loading-dots span {
-            width: 12px;
-            height: 12px;
-            background: white;
-            border-radius: 50%;
-            animation: dotBounce 1.4s infinite ease-in-out both;
-        }
+        #splash-screen.hidden { opacity: 0; pointer-events: none; }
+        .splash-logo { width: 200px; height: auto; margin-bottom: 30px; animation: logoFadeIn 1s ease-out; }
+        .splash-text { color: white; font-size: 32px; font-weight: bold; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; animation: textSlideUp 1s ease-out 0.3s both; }
+        .splash-subtext { color: rgba(255,255,255,0.9); font-size: 16px; margin-top: 10px; animation: textSlideUp 1s ease-out 0.5s both; }
+        .loading-dots { display: flex; gap: 8px; margin-top: 30px; }
+        .loading-dots span { width: 12px; height: 12px; background: white; border-radius: 50%; animation: dotBounce 1.4s infinite ease-in-out both; }
         .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
         .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
-        
-        @keyframes logoFadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-        @keyframes textSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @keyframes dotBounce {
-            0%, 80%, 100% { 
-                transform: scale(0.8);
-                opacity: 0.5;
-            }
-            40% { 
-                transform: scale(1.2);
-                opacity: 1;
-            }
-        }
-        
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+
+        @keyframes logoFadeIn { from { opacity:0; transform:scale(0.8) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
+        @keyframes textSlideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes dotBounce { 0%,80%,100% { transform:scale(0.8); opacity:0.5; } 40% { transform:scale(1.2); opacity:1; } }
+
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -123,48 +55,25 @@
             padding: 15px;
             padding-bottom: env(safe-area-inset-bottom);
         }
-        html {
-            height: -webkit-fill-available;
-        }
+        html { height: -webkit-fill-available; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
         .container {
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 600px;
+            max-width: 620px;
             width: 100%;
             padding: 30px 20px;
         }
-        h1 {
-            color: #333;
-            margin-bottom: 8px;
-            font-size: 26px;
-            text-align: center;
+        h1 { color: #333; margin-bottom: 8px; font-size: 26px; text-align: center; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 25px; font-size: 14px; }
+
+        @media (max-width:480px) {
+            body { padding:10px; align-items:flex-start; padding-top:max(20px, env(safe-area-inset-top)); }
+            .container { padding:25px 15px; border-radius:15px; }
+            h1 { font-size:24px; }
+            .subtitle { font-size:13px; margin-bottom:20px; }
         }
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 25px;
-            font-size: 14px;
-        }
-        
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-                align-items: flex-start;
-                padding-top: max(20px, env(safe-area-inset-top));
-            }
-            .container {
-                padding: 25px 15px;
-                border-radius: 15px;
-            }
-            h1 {
-                font-size: 24px;
-            }
-            .subtitle {
-                font-size: 13px;
-                margin-bottom: 20px;
-            }
-        }
+
         .upload-area {
             border: 3px dashed #667eea;
             border-radius: 15px;
@@ -182,87 +91,74 @@
             align-items: center;
             justify-content: center;
         }
-        .upload-area:hover {
-            border-color: #764ba2;
-            background: #f0f1ff;
+        .upload-area:hover { border-color:#764ba2; background:#f0f1ff; }
+        .upload-area.dragover { border-color:#764ba2; background:#e8e9ff; transform:scale(1.02); }
+        .upload-area:active { transform:scale(0.98); }
+        .upload-icon { font-size:42px; margin-bottom:12px; }
+        .upload-area p { margin:0; line-height:1.5; }
+
+        @media (max-width:480px) {
+            .upload-area { padding:25px 15px; min-height:120px; border-width:2px; }
+            .upload-icon { font-size:36px; margin-bottom:10px; }
+            .upload-area p { font-size:14px; }
         }
-        .upload-area.dragover {
-            border-color: #764ba2;
-            background: #e8e9ff;
-            transform: scale(1.02);
-        }
-        .upload-area:active {
-            transform: scale(0.98);
-        }
-        .upload-icon {
-            font-size: 42px;
-            margin-bottom: 12px;
-        }
-        .upload-area p {
-            margin: 0;
-            line-height: 1.5;
-        }
-        
-        @media (max-width: 480px) {
-            .upload-area {
-                padding: 25px 15px;
-                min-height: 120px;
-                border-width: 2px;
-            }
-            .upload-icon {
-                font-size: 36px;
-                margin-bottom: 10px;
-            }
-            .upload-area p {
-                font-size: 14px;
-            }
-        }
-        input[type="file"] {
-            display: none;
-        }
-        .watermark-section {
-            margin: 20px 0;
-        }
-        .watermark-label {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-            display: block;
-            font-size: 15px;
-        }
-        .watermark-preview {
-            max-width: 180px;
-            max-height: 90px;
-            margin-top: 8px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            display: block;
-        }
-        
-        @media (max-width: 480px) {
-            .watermark-section {
-                margin: 18px 0;
-            }
-            .watermark-label {
-                font-size: 14px;
-            }
-            .watermark-preview {
-                max-width: 150px;
-                max-height: 75px;
-            }
-        }
-        .btn-group {
+        input[type="file"] { display:none; }
+
+        /* Watermark sections */
+        .watermark-sections {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        @media (max-width: 480px) {
+            .watermark-sections { grid-template-columns: 1fr; gap: 12px; }
+        }
+        .watermark-section {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 14px;
+            background: #fafafa;
+        }
+        .watermark-section-title {
+            font-weight: 700;
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .watermark-section-desc {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .watermark-label { font-weight: 600; color: #333; margin-bottom: 10px; display: block; font-size: 15px; }
+        .watermark-preview { max-width: 180px; max-height: 90px; margin-top: 8px; border: 2px solid #ddd; border-radius: 8px; display: block; }
+        #watermarkList, #watermarkSenderList { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:10px; }
+        .watermark-item { display:flex; flex-direction:column; align-items:center; }
+        .watermark-filename { font-size:11px; text-align:center; color:#666; margin-top:5px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+        /* Buttons */
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
             margin-top: 20px;
+        }
+        @media (max-width: 520px) {
+            .btn-group { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 360px) {
+            .btn-group { grid-template-columns: 1fr; }
         }
         .btn {
             color: white;
             border: none;
-            padding: 16px 20px;
+            padding: 14px 12px;
             border-radius: 30px;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -274,228 +170,125 @@
             align-items: center;
             justify-content: center;
             white-space: nowrap;
+            gap: 4px;
         }
-        .btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-        .btn:active:not(:disabled) {
-            transform: translateY(0);
-        }
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .btn-shopee {
-            background: linear-gradient(135deg, #ee4d2d 0%, #ff6b4d 100%);
-        }
-        .btn-shopee:hover:not(:disabled) {
-            box-shadow: 0 10px 25px rgba(238, 77, 45, 0.4);
-        }
-        .btn-lazada {
-            background: linear-gradient(135deg, #0f146d 0%, #1a1f8f 100%);
-        }
-        .btn-lazada:hover:not(:disabled) {
-            box-shadow: 0 10px 25px rgba(15, 20, 109, 0.4);
-        }
-        
-        @media (max-width: 480px) {
-            .btn-group {
-                gap: 10px;
-                margin-top: 18px;
-            }
-            .btn {
-                padding: 14px 16px;
-                font-size: 14px;
-                min-height: 48px;
-                border-radius: 25px;
-            }
-        }
-        
-        @media (max-width: 360px) {
-            .btn-group {
-                grid-template-columns: 1fr;
-            }
-            .btn {
-                width: 100%;
-            }
-        }
-        .status {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 500;
-            font-size: 15px;
-        }
-        .status.success {
-            background: #d4edda;
-            color: #155724;
-        }
-        .status.error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        .status.processing {
-            background: #fff3cd;
-            color: #856404;
-        }
-        .file-list {
-            margin-top: 15px;
-        }
-        .file-item {
-            background: #f8f9ff;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-        .file-name {
-            font-weight: 500;
-            color: #333;
-            font-size: 14px;
-            flex: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .file-count {
-            font-size: 12px;
-            color: #667eea;
-            background: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        
-        @media (max-width: 480px) {
-            .status {
-                padding: 12px;
-                font-size: 14px;
-                margin-top: 18px;
-            }
-            .file-list {
-                margin-top: 12px;
-            }
-            .file-item {
-                padding: 10px 12px;
-            }
-            .file-name {
-                font-size: 13px;
-            }
-            .file-count {
-                font-size: 11px;
-                padding: 3px 10px;
-            }
-        }
-        .loading {
+        .btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 10px 25px rgba(0,0,0,0.3); }
+        .btn:active:not(:disabled) { transform:translateY(0); }
+        .btn:disabled { opacity:0.5; cursor:not-allowed; }
+        .btn-shopee { background: linear-gradient(135deg, #ee4d2d 0%, #ff6b4d 100%); }
+        .btn-shopee:hover:not(:disabled) { box-shadow:0 10px 25px rgba(238,77,45,0.4); }
+        .btn-lazada { background: linear-gradient(135deg, #0f146d 0%, #1a1f8f 100%); }
+        .btn-lazada:hover:not(:disabled) { box-shadow:0 10px 25px rgba(15,20,109,0.4); }
+        .btn-tiktok { background: linear-gradient(135deg, #010101 0%, #2d2d2d 100%); }
+        .btn-tiktok:hover:not(:disabled) { box-shadow:0 10px 25px rgba(0,0,0,0.5); }
+
+        .status { margin-top:20px; padding:15px; border-radius:10px; text-align:center; font-weight:500; font-size:15px; }
+        .status.success { background:#d4edda; color:#155724; }
+        .status.error { background:#f8d7da; color:#721c24; }
+        .status.processing { background:#fff3cd; color:#856404; }
+
+        .file-list { margin-top:15px; }
+        .file-item { background:#f8f9ff; padding:12px 15px; border-radius:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+        .file-name { font-weight:500; color:#333; font-size:14px; flex:1; overflow:hidden; text-overflow:ellipsis; }
+        .file-count { font-size:12px; color:#667eea; background:white; padding:4px 12px; border-radius:12px; white-space:nowrap; flex-shrink:0; }
+
+        .loading { display:inline-block; width:20px; height:20px; border:3px solid #f3f3f3; border-top:3px solid #667eea; border-radius:50%; animation:spin 1s linear infinite; margin-right:8px; }
+        @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+
+        /* Tiktok badge */
+        .tiktok-badge {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 8px;
+            background: linear-gradient(135deg, #fe2c55, #25f4ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #ddd, transparent);
+            margin: 20px 0;
         }
-        
-        /* Watermark list improvements */
-        #watermarkList {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        
-        .watermark-item {
-            display: flex;
-            flex-direction: column;
+
+        /* Info badge for sender watermark */
+        .info-badge {
+            display: inline-flex;
             align-items: center;
-        }
-        
-        .watermark-filename {
-            font-size: 11px;
-            text-align: center;
-            color: #666;
-            margin-top: 5px;
-            max-width: 180px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        
-        @media (max-width: 480px) {
-            .loading {
-                width: 18px;
-                height: 18px;
-                border-width: 2px;
-            }
-            #watermarkList {
-                gap: 8px;
-            }
-            .watermark-filename {
-                font-size: 10px;
-                max-width: 150px;
-            }
-        }
-        
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
+            gap: 5px;
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 12px;
+            color: #795548;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <!-- Splash Screen -->
     <div id="splash-screen">
         <img src="logo.jpg" alt="MATIN ORDER" class="splash-logo">
         <div class="splash-text">MATIN ORDER</div>
-        <div class="splash-subtext">Che tên sản phẩm - Shopee & Lazada</div>
-        <div class="loading-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <div class="splash-subtext">Che tên sản phẩm - Shopee, Lazada & TikTok</div>
+        <div class="loading-dots"><span></span><span></span><span></span></div>
     </div>
 
     <div class="container">
         <h1>MATIN ORDER</h1>
-        <p class="subtitle">Che tên sản phẩm - Shopee & Lazada</p>
-        
+        <p class="subtitle">Che tên sản phẩm &amp; tên người gửi – Shopee, Lazada &amp; TikTok Shop</p>
+
+        <!-- PDF Upload -->
         <div class="upload-area" id="pdfDropZone">
             <div class="upload-icon">📄</div>
             <p><strong>Kéo thả file PDF vào đây</strong></p>
-            <p style="color: #999; font-size: 14px; margin-top: 8px;">hoặc nhấn để chọn file</p>
+            <p style="color:#999;font-size:14px;margin-top:8px;">hoặc nhấn để chọn file</p>
             <input type="file" id="pdfInput" accept=".pdf" multiple>
-        </div>
-
-        <div class="watermark-section">
-            <label class="watermark-label">Upload Watermark (JPG/PNG - Có thể chọn nhiều):</label>
-            <div class="upload-area" id="watermarkDropZone" style="padding: 20px;">
-                <div class="upload-icon" style="font-size: 32px;">🖼️</div>
-                <p style="font-size: 14px;">Chọn ảnh watermark (nhiều file)</p>
-                <input type="file" id="watermarkInput" accept="image/*" multiple>
-            </div>
-            <div id="watermarkList" style="margin-top: 10px;"></div>
         </div>
 
         <div class="file-list" id="fileList"></div>
 
+        <div class="section-divider"></div>
+
+        <!-- Two watermark sections side by side -->
+        <div class="watermark-sections">
+            <!-- Watermark 1: Product name -->
+            <div class="watermark-section">
+                <div class="watermark-section-title">🏷️ Che tên sản phẩm</div>
+                <div class="watermark-section-desc">Ảnh che vùng tên SP</div>
+                <div class="upload-area" id="watermarkDropZone" style="padding:15px;min-height:90px;border-width:2px;">
+                    <div class="upload-icon" style="font-size:26px;margin-bottom:6px;">🖼️</div>
+                    <p style="font-size:12px;">Chọn ảnh (nhiều file)</p>
+                    <input type="file" id="watermarkInput" accept="image/*" multiple>
+                </div>
+                <div id="watermarkList"></div>
+            </div>
+
+            <!-- Watermark 2: Sender name -->
+            <div class="watermark-section">
+                <div class="watermark-section-title">👤 Che tên người gửi</div>
+                <div class="watermark-section-desc">Ảnh che vùng người gửi</div>
+                <div class="upload-area" id="watermarkSenderDropZone" style="padding:15px;min-height:90px;border-width:2px;">
+                    <div class="upload-icon" style="font-size:26px;margin-bottom:6px;">🖼️</div>
+                    <p style="font-size:12px;">Chọn ảnh (nhiều file)</p>
+                    <input type="file" id="watermarkSenderInput" accept="image/*" multiple>
+                </div>
+                <div id="watermarkSenderList"></div>
+            </div>
+        </div>
+
+        <div class="info-badge">
+            ℹ️ Nếu chỉ muốn che 1 vùng, chỉ cần upload 1 loại watermark. Cả hai sẽ được áp dụng nếu có đủ.
+        </div>
+
+        <!-- Buttons -->
         <div class="btn-group">
-            <button class="btn btn-shopee" id="processBtnShopee" disabled>
-                🛒 Xử Lý Shopee
-            </button>
-            <button class="btn btn-lazada" id="processBtnLazada" disabled>
-                🛍️ Xử Lý Lazada
+            <button class="btn btn-shopee" id="processBtnShopee" disabled>🛒 Shopee</button>
+            <button class="btn btn-lazada" id="processBtnLazada" disabled>🛍️ Lazada</button>
+            <button class="btn btn-tiktok" id="processBtnTiktok" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+                TikTok
             </button>
         </div>
 
@@ -503,203 +296,169 @@
     </div>
 
     <script>
-        // Splash Screen Handler
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const splash = document.getElementById('splash-screen');
                 splash.classList.add('hidden');
-                setTimeout(function() {
-                    splash.style.display = 'none';
-                }, 500);
-            }, 1500); // Hiển thị splash 1.5 giây
+                setTimeout(function() { splash.style.display = 'none'; }, 500);
+            }, 1500);
         });
 
         const { PDFDocument, rgb } = PDFLib;
-        
-        let pdfFiles = [];
-        let watermarkFiles = [];
 
-        // PDF Upload
+        let pdfFiles = [];
+        let watermarkFiles = [];       // che tên sản phẩm
+        let watermarkSenderFiles = []; // che tên người gửi
+
+        // ── PDF Upload ──────────────────────────────────────────────────
         const pdfDropZone = document.getElementById('pdfDropZone');
         const pdfInput = document.getElementById('pdfInput');
-        
         pdfDropZone.addEventListener('click', () => pdfInput.click());
-        pdfDropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            pdfDropZone.classList.add('dragover');
-        });
-        pdfDropZone.addEventListener('dragleave', () => {
-            pdfDropZone.classList.remove('dragover');
-        });
-        pdfDropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            pdfDropZone.classList.remove('dragover');
-            handlePDFFiles(e.dataTransfer.files);
-        });
-        pdfInput.addEventListener('change', (e) => {
-            handlePDFFiles(e.target.files);
-        });
-
-        // Watermark Upload
-        const watermarkDropZone = document.getElementById('watermarkDropZone');
-        const watermarkInput = document.getElementById('watermarkInput');
-        const watermarkList = document.getElementById('watermarkList');
-        
-        watermarkDropZone.addEventListener('click', () => watermarkInput.click());
-        watermarkDropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            watermarkDropZone.classList.add('dragover');
-        });
-        watermarkDropZone.addEventListener('dragleave', () => {
-            watermarkDropZone.classList.remove('dragover');
-        });
-        watermarkDropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            watermarkDropZone.classList.remove('dragover');
-            if (e.dataTransfer.files.length > 0) {
-                handleWatermarkFiles(e.dataTransfer.files);
-            }
-        });
-        watermarkInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) handleWatermarkFiles(e.target.files);
-        });
-
-        async function handleWatermarkFiles(files) {
-            watermarkFiles = Array.from(files).filter(f => 
-                f.type === 'image/jpeg' || f.type === 'image/jpg' || f.type === 'image/png'
-            );
-            displayWatermarkList();
-            updateProcessButtons();
-        }
-
-        function displayWatermarkList() {
-            watermarkList.innerHTML = watermarkFiles.map((file, i) => {
-                const url = URL.createObjectURL(file);
-                return `
-                    <div class="watermark-item">
-                        <img src="${url}" class="watermark-preview">
-                        <p class="watermark-filename">${file.name}</p>
-                    </div>
-                `;
-            }).join('');
-        }
+        pdfDropZone.addEventListener('dragover', e => { e.preventDefault(); pdfDropZone.classList.add('dragover'); });
+        pdfDropZone.addEventListener('dragleave', () => pdfDropZone.classList.remove('dragover'));
+        pdfDropZone.addEventListener('drop', e => { e.preventDefault(); pdfDropZone.classList.remove('dragover'); handlePDFFiles(e.dataTransfer.files); });
+        pdfInput.addEventListener('change', e => handlePDFFiles(e.target.files));
 
         function handlePDFFiles(files) {
             pdfFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.pdf'));
             displayFileList();
             updateProcessButtons();
         }
-
         function displayFileList() {
             const fileList = document.getElementById('fileList');
-            if (pdfFiles.length > 0) {
-                fileList.innerHTML = `
-                    <div class="file-item">
-                        <span class="file-name">📄 ${pdfFiles.length} file PDF đã chọn</span>
-                        <span class="file-count">${pdfFiles.length} file</span>
-                    </div>
-                `;
-            } else {
-                fileList.innerHTML = '';
-            }
+            fileList.innerHTML = pdfFiles.length > 0
+                ? `<div class="file-item"><span class="file-name">📄 ${pdfFiles.length} file PDF đã chọn</span><span class="file-count">${pdfFiles.length} file</span></div>`
+                : '';
+        }
+
+        // ── Watermark 1 (product) ────────────────────────────────────────
+        setupWatermarkZone('watermarkDropZone', 'watermarkInput', 'watermarkList', (files) => {
+            watermarkFiles = files;
+            updateProcessButtons();
+        });
+
+        // ── Watermark 2 (sender) ─────────────────────────────────────────
+        setupWatermarkZone('watermarkSenderDropZone', 'watermarkSenderInput', 'watermarkSenderList', (files) => {
+            watermarkSenderFiles = files;
+            updateProcessButtons();
+        });
+
+        function setupWatermarkZone(dropZoneId, inputId, listId, onUpdate) {
+            const zone = document.getElementById(dropZoneId);
+            const input = document.getElementById(inputId);
+            const list = document.getElementById(listId);
+            zone.addEventListener('click', () => input.click());
+            zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+            zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+            zone.addEventListener('drop', e => {
+                e.preventDefault(); zone.classList.remove('dragover');
+                handleWatermarkFiles(e.dataTransfer.files, list, onUpdate);
+            });
+            input.addEventListener('change', e => handleWatermarkFiles(e.target.files, list, onUpdate));
+        }
+
+        function handleWatermarkFiles(files, listEl, onUpdate) {
+            const filtered = Array.from(files).filter(f => ['image/jpeg','image/jpg','image/png'].includes(f.type));
+            onUpdate(filtered);
+            listEl.innerHTML = filtered.map(file => {
+                const url = URL.createObjectURL(file);
+                return `<div class="watermark-item"><img src="${url}" class="watermark-preview"><p class="watermark-filename">${file.name}</p></div>`;
+            }).join('');
         }
 
         function updateProcessButtons() {
-            const btnShopee = document.getElementById('processBtnShopee');
-            const btnLazada = document.getElementById('processBtnLazada');
-            const canProcess = pdfFiles.length > 0 && watermarkFiles.length > 0;
-            btnShopee.disabled = !canProcess;
-            btnLazada.disabled = !canProcess;
+            const hasFiles = pdfFiles.length > 0;
+            const hasAnyWatermark = watermarkFiles.length > 0 || watermarkSenderFiles.length > 0;
+            const canProcess = hasFiles && hasAnyWatermark;
+            document.getElementById('processBtnShopee').disabled = !canProcess;
+            document.getElementById('processBtnLazada').disabled = !canProcess;
+            document.getElementById('processBtnTiktok').disabled = !canProcess;
         }
 
-        // Shopee coordinates
-        const SHOPEE_COORDS = {
-            x: 10,
-            y: 180,
-            width: 197.6273,
-            height: 108.9624
+        // ── Coordinates ──────────────────────────────────────────────────
+        // Product name coordinates (per platform)
+        const PRODUCT_COORDS = {
+            shopee:  { x: 10,  y: 180, width: 100, height: 50 },
+            lazada:  { x: 15,  y: 236, width: 266.7682, height: 129.9056 },
+            tiktok:  { x: 10,  y: 180, width: 197.6273, height: 108.9624 }, // tạm dùng shopee
         };
 
-        // Lazada coordinates
-        const LAZADA_COORDS = {
-            x: 15,
-            y: 236,
-            width: 266.7682,
-            height: 129.9056
+        // Sender name coordinates (per platform) — tạm dùng placeholder, cần hiệu chỉnh
+        const SENDER_COORDS = {
+            shopee:  { x: 11.50,  y: 76.00,  width: 117.38, height: 10.74},
+            lazada:  { x: 15,  y: 60,  width: 200,       height: 50 },
+            tiktok:  { x: 43.25,  y: 104.93,  width: 117.38, height: 10.74 },
         };
 
-        async function processPDFs(coords, platform) {
+        // ── Core processing ───────────────────────────────────────────────
+        async function embedImage(pdfDoc, file) {
+            const ab = await file.arrayBuffer();
+            const bytes = new Uint8Array(ab);
+            return (file.type === 'image/png') ? pdfDoc.embedPng(bytes) : pdfDoc.embedJpg(bytes);
+        }
+
+        async function applyOverlay(page, coords, image) {
+            const { height } = page.getSize();
+            const { x, y, width, height: h } = coords;
+            page.drawRectangle({ x, y: height - y - h, width, height: h, color: rgb(1,1,1) });
+            if (image) page.drawImage(image, { x, y: height - y - h, width, height: h });
+        }
+
+        async function processPDFs(platform) {
             const status = document.getElementById('status');
-            status.innerHTML = `<div class="status processing"><div class="loading"></div> Đang xử lý ${platform}...</div>`;
+            const platformLabel = { shopee: 'Shopee', lazada: 'Lazada', tiktok: 'TikTok Shop' }[platform];
+            status.innerHTML = `<div class="status processing"><div class="loading"></div> Đang xử lý ${platformLabel}...</div>`;
 
             try {
-                let watermarkIndex = 0;
-                
-                for (const file of pdfFiles) {
-                    // Chọn watermark theo vòng lặp
-                    const watermarkFile = watermarkFiles[watermarkIndex % watermarkFiles.length];
-                    watermarkIndex++;
+                const productCoords = PRODUCT_COORDS[platform];
+                const senderCoords  = SENDER_COORDS[platform];
 
+                for (let i = 0; i < pdfFiles.length; i++) {
+                    const file = pdfFiles[i];
                     const arrayBuffer = await file.arrayBuffer();
                     const pdfDoc = await PDFDocument.load(arrayBuffer);
-                    
-                    // Load watermark
-                    const watermarkArrayBuffer = await watermarkFile.arrayBuffer();
-                    const watermarkImageBytes = new Uint8Array(watermarkArrayBuffer);
-                    
-                    let watermarkImage;
-                    const imgType = watermarkFile.type;
-                    if (imgType === 'image/jpeg' || imgType === 'image/jpg') {
-                        watermarkImage = await pdfDoc.embedJpg(watermarkImageBytes);
-                    } else {
-                        watermarkImage = await pdfDoc.embedPng(watermarkImageBytes);
+
+                    // Pre-embed images once per PDF
+                    let productImg = null, senderImg = null;
+
+                    if (watermarkFiles.length > 0) {
+                        const wf = watermarkFiles[i % watermarkFiles.length];
+                        productImg = await embedImage(pdfDoc, wf);
+                    }
+                    if (watermarkSenderFiles.length > 0) {
+                        const sf = watermarkSenderFiles[i % watermarkSenderFiles.length];
+                        senderImg = await embedImage(pdfDoc, sf);
                     }
 
                     const pages = pdfDoc.getPages();
-                    pages.forEach(page => {
-                        const { height } = page.getSize();
-                        
-                        // Vẽ nền trắng
-                        page.drawRectangle({
-                            x: coords.x,
-                            y: height - coords.y - coords.height,
-                            width: coords.width,
-                            height: coords.height,
-                            color: rgb(1, 1, 1),
-                        });
-                        
-                        // Vẽ watermark
-                        page.drawImage(watermarkImage, {
-                            x: coords.x,
-                            y: height - coords.y - coords.height,
-                            width: coords.width,
-                            height: coords.height,
-                        });
-                    });
+                    for (const page of pages) {
+                        if (productImg || watermarkFiles.length === 0 && false) {
+                            // only draw product overlay if we have something to cover
+                        }
+                        if (watermarkFiles.length > 0) {
+                            await applyOverlay(page, productCoords, productImg);
+                        }
+                        if (watermarkSenderFiles.length > 0) {
+                            await applyOverlay(page, senderCoords, senderImg);
+                        }
+                    }
 
                     const pdfBytes = await pdfDoc.save();
                     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
-                    a.href = url;
-                    a.download = file.name;
-                    a.click();
+                    a.href = url; a.download = file.name; a.click();
                 }
 
-                status.innerHTML = `<div class="status success">✅ Hoàn tất ${platform}! ${pdfFiles.length} file đã được tải xuống.</div>`;
+                status.innerHTML = `<div class="status success">✅ Hoàn tất ${platformLabel}! ${pdfFiles.length} file đã được tải xuống.</div>`;
             } catch (error) {
                 status.innerHTML = `<div class="status error">❌ Lỗi: ${error.message}</div>`;
             }
         }
 
-        // Event listeners for buttons
-        document.getElementById('processBtnShopee').addEventListener('click', () => {
-            processPDFs(SHOPEE_COORDS, 'Shopee');
-        });
-
-        document.getElementById('processBtnLazada').addEventListener('click', () => {
-            processPDFs(LAZADA_COORDS, 'Lazada');
-        });
+        document.getElementById('processBtnShopee').addEventListener('click', () => processPDFs('shopee'));
+        document.getElementById('processBtnLazada').addEventListener('click', () => processPDFs('lazada'));
+        document.getElementById('processBtnTiktok').addEventListener('click', () => processPDFs('tiktok'));
     </script>
 </body>
 </html>
